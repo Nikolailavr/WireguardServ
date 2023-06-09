@@ -17,19 +17,14 @@ class Key:
         self.public = public
 
 
-def generate_wireguard_keys(server: bool = False) -> Key:
+def generate_wireguard_keys() -> Key:
     """
     Generate a WireGuard private & public key
     Requires that the 'wg' command is available on PATH
     Returns (private_key, public_key), both strings
     """
-    if server:
-        os.system("wg genkey | tee /etc/wireguard/server_private_key | wg pubkey | tee /etc/wireguard/server_public_key")
-        privkey = subprocess.check_output("cat /etc/wireguard/server_private_key", shell=True).decode("utf-8").strip()
-        pubkey = subprocess.check_output(f"cat /etc/wireguard/server_public_key", shell=True).decode("utf-8").strip()
-    else:
-        privkey = subprocess.check_output("wg genkey", shell=True).decode("utf-8").strip()
-        pubkey = subprocess.check_output(f"echo '{privkey}' | wg pubkey", shell=True).decode("utf-8").strip()
+    privkey = subprocess.check_output("wg genkey", shell=True).decode("utf-8").strip()
+    pubkey = subprocess.check_output(f"echo '{privkey}' | wg pubkey", shell=True).decode("utf-8").strip()
     return Key(private=privkey, public=pubkey)
 
 
@@ -59,7 +54,7 @@ def copy():
 def generate_configs(count_clients: int = 1) -> None:
     if not os.path.exists('clients'):
         os.mkdir('clients')
-    server = generate_wireguard_keys(server=True)
+    server = generate_wireguard_keys()
     postup = ''
     postdown = ''
     for num in range(count_clients):
