@@ -10,8 +10,8 @@
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt install qrencode git wireguard python3-venv -y
-git copy git@github.com:Nikolailavr/TestCopy.git
-cd TestCopy
+git copy git@github.com:Nikolailavr/WireguardServ.git
+cd WireguardServ
 sh install.sh
 ```
 
@@ -20,6 +20,6 @@ sh install.sh
 
 ```
 source venv/bin/activate
-python3 main.py data -o
+python3 main.py
 ```
 
