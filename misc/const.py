@@ -1,8 +1,8 @@
 SERVER_CONF = """
 [Interface]
-PrivateKey = {PrivateKey}
 Address = 172.16.0.1/24
 ListenPort = 51830
+PrivateKey = {ServPrivateKey}
 SaveConfig = false
 PostUp = iptables -I FORWARD -i %i -j ACCEPT
 PostUp = iptables -I FORWARD -o %i -j ACCEPT
@@ -18,20 +18,21 @@ POSTDOWN = "PostDown = ip route delete 192.168.{num}.0/24 via 172.16.0.{num} dev
 
 PEER_CONF = """
 [Peer]
-PublicKey = {PublicKey}
+PublicKey = {PeerPublicKey}
 AllowedIPs = 172.16.0.{IP}/32,192.168.{IP}.0/24
 """
 
 CLIENT_CONF = """
 [Interface]
-Address = 172.16.0.{IP}/32
-PrivateKey = {PrivateKey}
+PrivateKey = {PeerPrivateKey}
+Address = 172.16.0.{IP}/24
 DNS = 8.8.8.8
 
 [Peer]
-PublicKey = {PublicKey}
-AllowedIPs = 0.0.0.0/0
+PublicKey = {ServPublicKey}
 Endpoint = {ServerIP}:51830
+AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 20
 """
 
 ACTIONS = """

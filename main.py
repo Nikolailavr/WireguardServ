@@ -23,6 +23,7 @@ def generate_wireguard_keys() -> Key:
     Requires that the 'wg' command is available on PATH
     Returns (private_key, public_key), both strings
     """
+
     privkey = subprocess.check_output("wg genkey", shell=True).decode("utf-8").strip()
     pubkey = subprocess.check_output(f"echo '{privkey}' | wg pubkey", shell=True).decode("utf-8").strip()
     return Key(private=privkey, public=pubkey)
@@ -61,17 +62,17 @@ def generate_configs(count_clients: int = 1) -> None:
         postup += const.POSTUP.format(num=num+2) + '\n'
         postdown += const.POSTDOWN.format(num=num+2) + '\n'
     with open('wg0.conf', 'w') as file:
-        text = const.SERVER_CONF.format(PrivateKey=server.private, PostUp=postup, PostDown=postdown)
+        text = const.SERVER_CONF.format(ServPrivateKey=server.private, PostUp=postup, PostDown=postdown)
         file.write(text)
         for num in range(count_clients):
             client = generate_wireguard_keys()
-            text = const.PEER_CONF.format(PublicKey=client.public, IP=num+2)
+            text = const.PEER_CONF.format(PeerPublicKey=client.public, IP=num+2)
             file.write(text)
             with open(f'clients/client_{num+1}.conf', 'w') as client_conf:
                 text = const.CLIENT_CONF.format(
                     IP=num+2,
-                    PrivateKey=client.private,
-                    PublicKey=server.public,
+                    PeerPrivateKey=client.private,
+                    ServPublicKey=server.public,
                     ServerIP=get_IP()
                 )
                 client_conf.write(text)
