@@ -4,9 +4,11 @@ Address = 172.16.1.1/24
 ListenPort = 51820
 PrivateKey = {ServPrivateKey}
 SaveConfig = false
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostUp = iptables -I FORWARD -i %i -j ACCEPT
 PostUp = iptables -I FORWARD -o %i -j ACCEPT
 {PostUp}
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT
 PostDown = iptables -D FORWARD -o %i -j ACCEPT
 {PostDown}
