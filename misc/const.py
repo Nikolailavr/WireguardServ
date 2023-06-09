@@ -13,19 +13,19 @@ PostDown = iptables -D FORWARD -o %i -j ACCEPT
 Table = off
 """
 
-POSTUP = "PostUp = ip route add 192.168.{num}.0/24 via 172.16.0.{num} dev %i"
-POSTDOWN = "PostDown = ip route delete 192.168.{num}.0/24 via 172.16.0.{num} dev %i"
+POSTUP = "PostUp = ip route add 192.168.{num_1}.0/24 via 172.16.0.{num_2} dev %i"
+POSTDOWN = "PostDown = ip route delete 192.168.{num_1}.0/24 via 172.16.0.{num_2} dev %i"
 
 PEER_CONF = """
 [Peer]
 PublicKey = {PeerPublicKey}
-AllowedIPs = 172.16.0.{IP}/32,192.168.{IP}.0/24
+AllowedIPs = 172.16.0.{num_2}/32,192.168.{num_1}.0/24
 """
 
 CLIENT_CONF = """
 [Interface]
 PrivateKey = {PeerPrivateKey}
-Address = 172.16.0.{IP}/24
+Address = 172.16.0.{num_2}/24
 DNS = 8.8.8.8
 
 [Peer]

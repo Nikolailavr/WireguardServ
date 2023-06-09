@@ -63,18 +63,18 @@ def generate_configs(count_clients: int = 1) -> None:
     postup = ''
     postdown = ''
     for num in range(count_clients):
-        postup += const.POSTUP.format(num=num+2) + '\n'
-        postdown += const.POSTDOWN.format(num=num+2) + '\n'
+        postup += const.POSTUP.format(num_1=num+1, num_2=num+2) + '\n'
+        postdown += const.POSTDOWN.format(num_1=num+1, num_2=num+2) + '\n'
     with open('wg0.conf', 'w') as file:
         text = const.SERVER_CONF.format(ServPrivateKey=server.private, PostUp=postup, PostDown=postdown)
         file.write(text)
         for num in range(count_clients):
             client = generate_wireguard_keys()
-            text = const.PEER_CONF.format(PeerPublicKey=client.public, IP=num+2)
+            text = const.PEER_CONF.format(PeerPublicKey=client.public, num_1=num+1, num_2=num+2)
             file.write(text)
             with open(f'clients/client_{num+1}.conf', 'w') as client_conf:
                 text = const.CLIENT_CONF.format(
-                    IP=num+2,
+                    num_2=num+2,
                     PeerPrivateKey=client.private,
                     ServPublicKey=server.public,
                     ServerIP=get_IP()
