@@ -90,32 +90,31 @@ def interactive():
             os.system('clear')
             temp = input(const.ACTIONS)
             # os.system('clear')
-            match temp:
-                case '1':
-                    count = 0
-                    try:
-                        count = int(input('Введите количество клиентов: '))
-                    except:
-                        ...
-                    generate_configs(count_clients=count)
-                    print('All Generated')
-                case '2':
-                    copy()
-                    print(f'All files is copied')
-                case '3':
-                    os.system('sh prototypes/start')
-                case '4':
-                    show_qr(input('Введите номер клиента: '))
-                case '5':
-                    os.system('sudo systemctl restart wg-quick@wg0')
-                    os.system('sudo systemctl status wg-quick@wg0')
-                case '6':
-                    os.system('sudo systemctl stop wg-quick@wg0')
-                    os.system('sudo systemctl status wg-quick@wg0')
-                case 'exit':
-                    break
-                case _:
-                    print(f'Нет такой команды: {temp}')
+            if temp == '1':
+                count = 0
+                try:
+                    count = int(input('Введите количество клиентов: '))
+                except:
+                    ...
+                generate_configs(count_clients=count)
+                print('All Generated')
+            elif temp == '2':
+                copy()
+                print(f'All files is copied')
+            elif temp == '3':
+                os.system('sh prototypes/start')
+            elif temp == '4':
+                show_qr(input('Введите номер клиента: '))
+            elif temp == '5':
+                os.system('sudo systemctl restart wg-quick@wg0')
+                os.system('sudo systemctl status wg-quick@wg0')
+            elif temp == '6':
+                os.system('sudo systemctl stop wg-quick@wg0')
+                os.system('sudo systemctl status wg-quick@wg0')
+            elif temp == 'exit':
+                break
+            else:
+                print(f'Нет такой команды: {temp}')
             input('Для продолжения нажмите Enter')
         except KeyboardInterrupt:
             break
